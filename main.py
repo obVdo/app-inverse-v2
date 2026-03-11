@@ -51,7 +51,7 @@ except Exception as e:
     sys.exit(1)
 
 # == LOAD NOISE COVARIANCE ==
-cov_file = config.get('noise_cov') or ''
+cov_file = config.get('noise_cov') or config.get('cov') or ''
 if not cov_file or not os.path.isfile(cov_file):
     add_info_to_product(report_items, f"FATAL: Noise covariance not found: '{cov_file}'.", "error")
     create_product_json(report_items)
@@ -91,7 +91,12 @@ _loose = config.get('loose')
 loose  = float(_loose) if _loose not in (None, '', 'None', 'auto') else 'auto'
 
 _depth = config.get('depth')
-depth  = float(_depth) if _depth not in (None, '', 'None') else 0.8
+if _depth in (None, ''):
+    depth = 0.8                          # default
+elif str(_depth).lower() == 'none':
+    depth = None                         # explicit: no depth weighting
+else:
+    depth = float(_depth)
 
 _rank = config.get('rank')
 if _rank in (None, '', 'None', 'auto'):
