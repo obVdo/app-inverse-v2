@@ -87,17 +87,29 @@ except Exception as e:
     sys.exit(1)
 
 # == MAKE INVERSE OPERATOR ==
-loose = float(config.get('loose') or 0.2)
-depth = config.get('depth')
-depth = float(depth) if depth not in (None, '', 'None') else 0.8
+_loose = config.get('loose')
+loose  = float(_loose) if _loose not in (None, '', 'None', 'auto') else 'auto'
+
+_depth = config.get('depth')
+depth  = float(_depth) if _depth not in (None, '', 'None') else 0.8
+
+_rank = config.get('rank')
+if _rank in (None, '', 'None', 'auto'):
+    rank = None
+elif _rank == 'info':
+    rank = 'info'
+elif _rank == 'full':
+    rank = 'full'
+else:
+    rank = None
 
 try:
     inverse_operator = mne.minimum_norm.make_inverse_operator(
-        info, fwd, noise_cov, loose=loose, depth=depth, verbose=True
+        info, fwd, noise_cov, loose=loose, depth=depth, rank=rank, verbose=True
     )
     add_info_to_product(
         report_items,
-        f"Inverse operator: loose={loose}, depth={depth}",
+        f"Inverse operator: loose={loose}, depth={depth}, rank={rank}",
         "info"
     )
 except Exception as e:
