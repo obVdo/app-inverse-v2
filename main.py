@@ -3,6 +3,8 @@ app-inverse-v2: Create inverse operator for MEG/EEG source reconstruction.
 
 Authors : Guiomar Niso (guiomar.niso@gmail.com)
           Antonio Caulín (antoniocaulinatienzar@gmail.com) https://github.com/AntonioCauAt
+          Maximilien Chaumon https://github.com/dnacombo
+          obVdo https://github.com/obVdo
 Based on: https://github.com/guiomar/app-inverse-operator
 
 Inputs : fwd.fif (from app-forward-v2),
