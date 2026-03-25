@@ -58,6 +58,11 @@ except Exception as e:
 
 # == LOAD NOISE COVARIANCE ==
 cov_file = config.get('noise_cov') or config.get('cov') or ''
+# Brainlife may map the file as cov.fif or noise-cov.fif depending on registration
+if cov_file and not os.path.isfile(cov_file):
+    alt = os.path.join(os.path.dirname(cov_file), 'noise-cov.fif')
+    if os.path.isfile(alt):
+        cov_file = alt
 if not cov_file or not os.path.isfile(cov_file):
     add_info_to_product(report_items, f"FATAL: Noise covariance not found: '{cov_file}'.", "error")
     create_product_json(report_items)
